@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block body %}
+<script>
+    function rndAvg(total, items, difference) {
+        let list = []
+        let average = total / items
+
+        //First stage
+        let sum = 0
+        for (let i=0; i<items; i++) {
+            list[i] = Math.floor(average + random(-difference, difference))
+            sum += list[i]
+        }
+        
+        // Second stage
+        let error = total - sum
+        let averageError = error / items
+        sum = 0
+        for (let i=0; i<items; i++) {
+            list[i] += averageError
+            sum += list[i]
+
+            error = error - averageError
+            if (Math.floor(error) == 0) {
+                break
+            }
+        }
+
+        // rounding
+        sum = 0
+        for (let i=0; i<items; i++) {
+            list[i] = Math.floor(list[i])
+            sum += list[i]
+        }
+
+        // One final test, if theres a remained, It gets added to a random item
+        if (sum != total) {
+            let i = random(items)
+            list[i] += total - sum
+        }
+
+        return list
+    }
+</script>
+
+<div id="main_container" class="container d-block fixed-bottom">
+    <div id="screen" class="container-fluid h-100">
+        <h4 id="screen_text"></h4>
+        <p id="screen_comment">Welcome to culator 3!</p>
+    </div>
+</div>
+{% endblock %}
