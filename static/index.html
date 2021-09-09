@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#495057">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/android/android-launchericon-192-192.png">
+    <link rel="apple-touch-icon" href="static/icons/android/android-launchericon-192-192.png">
+    <link rel="icon" href="static/icons/favicon.ico" type="image/x-icon">
   </head>
   <body class="bg-dark">
     <!-- Disables zooming on iOS. fucking apple man. -->
@@ -19,15 +20,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-    <script src="js/main.js"></script>
-    <ul id="list" class="list-group">
-            
-    </ul>
-    <button id="back" type="button" class="btn btn-primary btn-block btn-lg border border-dark fixed-bottom w-100 d-none">Back</button>
+    <script src="static/js/main.js"></script>
+    <ul id="list" class="list-group"></ul>
+
+    <button id="back" type="button" class="btn btn-primary btn-block btn-lg border border-dark text-dark fixed-bottom w-100 d-none">Back</button>
     <div id="main_container" class="container d-block fixed-bottom w-100">
         <div id="screen" class="container-fluid h-100 text-light">
-            <h4 id="screen_text"></h4>
-            <p id="screen_comment">Welcome to culator 3!</p>
+            <h4 id="screen_text" class="lead"></h4>
+            <p id="screen_comment" class="text-primary lead">Welcome to culator 3!</p>
         </div>
     </div>
   </body>

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/static/")
+@app.route("/")
 def index():
     return app.send_static_file("index.html")
 

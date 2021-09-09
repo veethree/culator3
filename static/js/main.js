@@ -1,6 +1,6 @@
-
+// Registering service worker
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").then(registration => {
+    navigator.serviceWorker.register("static/sw.js").then(registration => {
         console.log("SW Registered")
         console.log(registration)
     }).catch(error => {
@@ -9,6 +9,7 @@ if ("serviceWorker" in navigator) {
     })
 }
 
+// Random average
 function random(min, max) {
     return Math.random() * (max - min) + min;
   }
@@ -53,6 +54,8 @@ function rndAvg(total, items, difference) {
     return list
 }
 
+// Generates the keypad. No real reason to do it like this apart
+// from it being easier to change the layout.
 function generate_key_pad() {
     if ($("#key_pad").length < 1) {
         let layout = [
@@ -63,13 +66,13 @@ function generate_key_pad() {
             ["1", "2", "3", "-"],
             ["0", ".", "="]
         ]
-        let button = '<button id="key_ID" type="button" class="btn btn-primary text-dark btn-block btn-lg border border-dark">TEXT</button>'
+        let button = '<button id="key_ID" type="button" class="p-3 btn btn-primary text-dark btn-block btn-lg border border-dark">TEXT</button>'
 
-        let keypad_html = "<div id='key_pad' class='container d-block bg-dark'>"
+        let keypad_html = "<div id='key_pad' class='bg-dark p-0'>"
         let row_id = 0
         for (let y=0; y < layout.length; y++) {
             let row = layout[y]
-            keypad_html = keypad_html + '<div class="row"><div id="row_' + row_id + '" class="btn-group" role="group aria-label="keypad">'
+            keypad_html = keypad_html + '<div class="row p-0"><div id="row_' + row_id + '" class="btn-group p-0" role="group aria-label="keypad">'
             for (let x=0; x < row.length; x++) {
                 let id = row[x].replace(" ", "_")
                 keypad_html = keypad_html + button.replace("TEXT", row[x]).replace("ID", id)
@@ -80,6 +83,7 @@ function generate_key_pad() {
         keypad_html = keypad_html + "</div>"
 
         $("#main_container").append(keypad_html)
+        $("#row_0 > button").removeClass("p-3")
         $("#row_0 > button").addClass("p-0")
     }
 }
