@@ -53,7 +53,7 @@ function generate_key_pad() {
             ["1", "2", "3", "-"],
             ["0", ".", "="]
         ]
-        let button = '<button id="key_ID" type="button" class="btn btn-primary btn-block btn-lg border border-dark">TEXT</button>'
+        let button = '<button id="key_ID" type="button" class="btn btn-primary text-dark btn-block btn-lg border border-dark">TEXT</button>'
 
         let keypad_html = "<div id='key_pad' class='container d-block bg-dark'>"
         let row_id = 0
@@ -74,6 +74,70 @@ function generate_key_pad() {
     }
 }
 
+// History
+function add_history(content) {
+    sessionStorage.setItem(sessionStorage.length, content)
+}
+
+function clear_history() {
+    sessionStorage.clear()
+}
+
+function get_history() {
+    let list = []
+    for (let i=0; i<sessionStorage.length; i++) {
+        list[i] = sessionStorage.getItem(i)
+    }
+    return list
+}
+
+// Screen
+function print_screen(text) {
+    $("#screen_text").text(text)
+}
+
+function print_comment(text) {
+    $("#screen_comment").text(text)
+}
+
+function clear_screen() {
+    $("#screen_text").text("")
+}
+
+function hide_screen() {
+    $("#screen").addClass("d-none")
+}
+
+function show_screen() {
+    $("#screen").removeClass("d-none")
+}
+
+// List toggle
+function show_list(list) {
+    if (list.length < 1) {
+        list[0] = "Nothing to see here..."
+    } 
+    for (let i=list.length - 1; i>=0; i--) {
+        $("#list").append('<li class="list-group-item bg-dark text-light border-light">' + list[i] + '</li>')
+    }
+    $("#back").removeClass("d-none")
+}
+
+function hide_list() {
+    $("li").remove()
+    $("#back").addClass("d-none")
+
+}
+
+// Keypad toggle
+function hide_keypad() {
+    $("#key_pad").addClass("d-none")
+}
+
+function show_keypad() {
+    $("#key_pad").removeClass("d-none")
+}
+
 $(document).ready(function() {
     // RNDAVG GLOBALS
     let random_average = false
@@ -84,15 +148,23 @@ $(document).ready(function() {
 
     // Disabling some buttons
     //$("#key_random_average").attr("disabled", true)
-    $("#key_history").attr("disabled", true)
-    $("#key_CH").attr("disabled", true)
+    //$("#key_history").attr("disabled", true)
+    //$("#key_CH").attr("disabled", true)
 
     // Click events
     $("#list").click(function() {
-        $("#key_pad").removeClass("d-none")
-        $("#screen").removeClass("d-none")
-        $("li").remove()
+        hide_list()
+        show_keypad()
+        show_screen()
+        clear_screen()
     })
+
+    // $("#back").click(function() {
+    //     hide_list()
+    //     show_keypad()
+    //     show_screen()
+    //     clear_screen()
+    // })
 
     $("button").click(function() {
         let key = $(this)
@@ -100,7 +172,7 @@ $(document).ready(function() {
         let comment = $("#screen_comment")
 
         if (key.text() == "c") {
-            screen.text("")
+            clear_screen()
         } else if (key.text() == "<") {
             screen.text(screen.text().substring(0, screen.text().length - 1))
         } else if (key.text() == "=") {
@@ -108,30 +180,49 @@ $(document).ready(function() {
                 if (screen.text().length > 0) {
                     random_average = false
                     items = screen.text()
-                    screen.text("")
-                    $("#key_pad").addClass("d-none")
-                    $("#screen").addClass("d-none")
-                    let item = rndAvg(total, items, 40)
-                    item.forEach(function(item) {
-                        $("#list").append('<li class="list-group-item bg-dark text-light border-light">' + item + '</li>')
-                    })
+                    hide_keypad()
+                    hide_screen()
+                    show_list(rndAvg(total, items, 40))
                 }
             } else {
+                let ok = false
+                let formula = ""
+                let result = ""
                 try {
-                    screen.text(eval(screen.text()))
+                    formula = screen.text()
+                    result = eval(screen.text())
+                    ok = true
                 } catch {
-                    screen.text("Invalid input.")
+                    result = "Invalid input"
+                }
+                if (ok) {
+                    if (screen.text().length > 0) {
+                        print_screen(result)
+                        add_history(formula + "=" + result)
+                    }
                 }
             }
         } else if (key.text() == "random average") {
             if(screen.text().length > 0) {
                 comment.text("Enter items:")
                 total = screen.text() 
-                screen.text("")
+                clear_screen()
                 random_average = true
             } else {
                 comment.text("Enter a total value first!")
             }
+        } else if (key.text() == "history") {
+            hide_keypad()
+            hide_screen()
+            show_list(get_history())
+        } else if (key.text() == "CH") {
+            clear_history()
+            print_comment("History cleared.")
+        } else if (key.text() == "Back") {
+            hide_list()
+            show_keypad()
+            show_screen()
+            clear_screen()
         } else {
             $("#screen_text").text(screen.text() + key.text())
             comment.text("")
